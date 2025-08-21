@@ -4,3 +4,4 @@ reportlab
 requests
 dotenv
 bs4
+PymuPDF
