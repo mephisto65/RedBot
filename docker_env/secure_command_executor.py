@@ -45,6 +45,7 @@ class SecureCommandExecutor:
             "netcat": CommandCategory.RECONNAISSANCE,
             "nc": CommandCategory.RECONNAISSANCE,
             "netcat-traditional": CommandCategory.RECONNAISSANCE,
+            "searchsploit": CommandCategory.EXPLOITATION,
             
             # Outils web (du Dockerfile)
             "gobuster": CommandCategory.ENUMERATION,

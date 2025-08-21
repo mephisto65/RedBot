@@ -8,6 +8,10 @@ from tools.web_scraper import WebScraperTool
 
 from tools.cmd_runner import pentest_api_tool as cmd_runner
 
+from tools.report_generator import report_generator_tool
+
+from tools.exploit_db_search import exploitdb_search_tool
+
 import time
 
 answers = []
@@ -18,7 +22,11 @@ google_tool = GoogleSearchTool(search_tool_instance)
 
 web_scraper_tool = WebScraperTool()
 
-tools=[google_tool,web_scraper_tool,cmd_runner]
+tools=[google_tool,
+       web_scraper_tool,
+       cmd_runner,
+       report_generator_tool,
+       exploitdb_search_tool]
 ####################
 
 #### INIT AGENT ####
@@ -44,6 +52,8 @@ system_message = (
     web_search: A tool to search the web for information about the web application.
     web_scraper: A tool to scrape the web application and extract information from it.
     cmd_runner: A tool to execute safe CMD commands on the local machine. You can check the allowed commands by using the 'allowed' action.
+    report_generator_tool: A tool to generate a pentest report from the collected findings. You can generate the report in markdown or pdf format.
+    exploitdb_search_tool: A tool to search for exploits on Exploit-DB using a keyword or CVE.
     
     """
 )

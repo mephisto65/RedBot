@@ -6,6 +6,9 @@ RUN apt-get update && apt-get upgrade -y
 
 # Installation des outils de pentesting et des packages Python
 RUN apt-get install -y \
+    # autres outils de base
+    exploitdb \
+    metasploit-framework \
     # Outils de reconnaissance et scanning
     nmap \
     masscan \

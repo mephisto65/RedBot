@@ -1,7 +1,7 @@
 import requests
 from langchain_core.tools import tool
 
-API_URL = "http://127.0.0.1:4444"  # Ton API tourne en local
+API_URL = "http://127.0.0.1:4444"  # TODO CONFIGURE API URL
 
 @tool
 def pentest_api_tool(action: str, command: str = None) -> str:
