@@ -1,0 +1,6 @@
+langchain
+langgraph
+reportlab
+requests
+dotenv
+bs4
