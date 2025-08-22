@@ -40,6 +40,20 @@ RUN apt-get install -y \
     vim \
     && rm -rf /var/lib/apt/lists/*
 
+
+# Getting wordlists and SecLists
+
+RUN mkdir /usr/share/wordlists
+RUN mkdir /usr/share/wordlists/dirb
+RUN mkdir /usr/share/wordlists/enumeration
+
+RUN mv /usr/share/dirb/wordlists/*.txt /usr/share/wordlists/dirb/
+
+RUN wget -O /usr/share/wordlists/rockyou.txt https://github.com/brannondorsey/naive-hashcat/releases/download/data/rockyou.txt
+
+RUN wget -O /usr/share/wordlists/enumeration/directory_list_medium.txt https://raw.githubusercontent.com/danielmiessler/SecLists/refs/heads/master/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-medium.txt
+RUN wget -O /usr/share/wordlists/enumeration/subdomains-110000.txt https://raw.githubusercontent.com/danielmiessler/SecLists/refs/heads/master/Discovery/DNS/subdomains-top1million-110000.txt
+
 # Correction des permissions pour nmap (nécessaire pour les scans)
 RUN chmod +s /usr/bin/nmap
 

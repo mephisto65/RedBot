@@ -2,6 +2,7 @@ import os
 
 from langchain_openai import ChatOpenAI
 from langgraph.prebuilt import ToolNode, create_react_agent
+from langchain_core.runnables import RunnableConfig
 
 from tools.web_search import GoogleSearchTool, WebSearchTool
 from tools.web_scraper import WebScraperTool
@@ -34,6 +35,7 @@ tools=[google_tool,
        download_file_tool,
        read_pdf,
        read_txt]
+
 ####################
 
 #### INIT AGENT ####
@@ -64,10 +66,14 @@ system_message = (
 
 if __name__ == "__main__":
     start_time = time.time()
-    prompt = "execute a command to know who you are"
+    prompt = "You are a pentester AI agent. Your goal is to find vulnerabilities in a web application and exploit them. The target web application is 'http://testphp.vulnweb.com' conduct a full pentest on it. Use all the tools at your disposal to find and exploit vulnerabilities. Start by gathering information about the web application using web search and web scraping. You can use advanced search techniques to find relevant information. such as google dorks. Then, identify potential vulnerabilities based on the gathered information. Finally, exploit the identified vulnerabilities to demonstrate their impact. Document your findings and provide recommendations for remediation."
 
     inputs = {"messages": [system_message,
                             ("user", prompt)]}
     
-    for event in graph.stream(inputs):
-        print("\n\nNew event:", event)
+    for event in graph.stream(inputs,config={"recursion_limit": 50}):
+        print(event)
+        # if 'agent' in event and event['agent']:
+        #     ai_message = event['agent']['messages'][0]
+        #     if ai_message.content != "" and ai_message.response_metadata['finish_reason'] == "stop":
+        #         print(ai_message.content)
