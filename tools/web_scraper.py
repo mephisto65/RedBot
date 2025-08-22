@@ -39,7 +39,7 @@ class WebScraperTool(BaseTool):
                 # No selector: extract all visible text from the page
                 extracted_text = soup.get_text(separator="\n", strip=True)
 
-            return extracted_text[:10000000000] 
+            return extracted_text[:150000]  # Limit to 200,000 characters
         except Exception as e:
             return f"Error during scraping: {str(e)}"
 
