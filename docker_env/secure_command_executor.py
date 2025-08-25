@@ -52,6 +52,7 @@ class SecureCommandExecutor:
             "nikto": CommandCategory.ENUMERATION,
             "dirb": CommandCategory.ENUMERATION,
             "sqlmap": CommandCategory.EXPLOITATION,
+            "xsser": CommandCategory.EXPLOITATION,
             "curl": CommandCategory.ENUMERATION,
             "wget": CommandCategory.ENUMERATION,
             

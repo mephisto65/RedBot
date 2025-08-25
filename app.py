@@ -17,6 +17,8 @@ from tools.retrieve_file import download_file_tool
 
 from tools.file_reader import read_pdf, read_txt
 
+from tools.zip_process import zip_processor_tool
+
 import time
 
 answers = []
@@ -34,7 +36,8 @@ tools=[google_tool,
        exploitdb_search_tool,
        download_file_tool,
        read_pdf,
-       read_txt]
+       read_txt,
+       zip_processor_tool]
 
 ####################
 
@@ -57,6 +60,9 @@ system_message = (
     3. Exploit the identified vulnerabilities to demonstrate their impact.
     4. Document your findings and provide recommendations for remediation.
 
+    YOU HAVE 100 STEPS TO COMPLETE YOUR GOAL. IF YOU RUN OUT OF STEPS, You have 1 more additional step to generate a report.
+    You must use the report_generator tool to create a report at the end of the task using the report_generator tool. The report should include findings, recommendations, and a summary of the pentest.
+
     """
 )
 
@@ -71,7 +77,7 @@ if __name__ == "__main__":
     inputs = {"messages": [system_message,
                             ("user", prompt)]}
     
-    for event in graph.stream(inputs,config={"recursion_limit": 50}):
+    for event in graph.stream(inputs,config={"recursion_limit": 110}):
         print(event)
         # if 'agent' in event and event['agent']:
         #     ai_message = event['agent']['messages'][0]

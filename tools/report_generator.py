@@ -12,10 +12,11 @@ from reportlab.lib.styles import getSampleStyleSheet
 def report_generator_tool(findings: dict, format: str = "markdown") -> str:
     """
     Generates a pentest report from the collected findings.
+    You ALWAYS need to provide findings in a structured dictionary format.
 
     Args:
-        findings (dict): A dictionary with the vulnerabilities found.
-            Example:
+        
+        REQUIRED : findings (dict): A dictionary with the vulnerabilities found. Be sure to exactly follow the following example
             {
                 "target": "example.com",
                 "findings": [
@@ -27,7 +28,7 @@ def report_generator_tool(findings: dict, format: str = "markdown") -> str:
                     "Disable TLS 1.0"
                 ]
             }
-        format (str): "markdown" or "pdf".
+        Optional : format (str): "markdown" or "pdf". (default: "markdown")
 
     Returns:
         str: Path to the generated file.
@@ -91,4 +92,4 @@ def report_generator_tool(findings: dict, format: str = "markdown") -> str:
 #     ]
 # }
 
-# print(report_generator_tool.invoke({"findings": test_findings, "format": "pdf"}))
+# print(report_generator_tool.invoke({"findings": test_findings, "format": "markdown"}))

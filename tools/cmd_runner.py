@@ -8,8 +8,8 @@ def pentest_api_tool(action: str, command: str = None) -> str:
     """
     Interact with the Pentest API. You have access to dictionaries at
     -  /usr/share/wordlists/rockyou.txt -- for password cracking
-    -  /usr/share/wordlists/enumerate/directory_list_medium.txt -- for directory enumeration
-    -  /usr/share/wordlists/enumerate/subdomains-110000.txt -- for subdomain enumeration
+    -  /usr/share/wordlists/enumeration/directory_list_medium.txt -- for directory enumeration
+    -  /usr/share/wordlists/enumeration/subdomains-110000.txt -- for subdomain enumeration
     - /usr/share/wordlists/dirb -- for directory brute-forcing
     
     Args:
