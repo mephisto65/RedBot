@@ -1,6 +1,8 @@
 import requests
 from langchain_core.tools import tool
 
+#TODO add time response / web vuln scanner / privilege escalation module
+
 API_URL = "http://127.0.0.1:4444"  # TODO CONFIGURE API URL
 
 @tool
