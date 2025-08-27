@@ -6,7 +6,7 @@ from langchain_core.tools import tool
 API_URL = "http://127.0.0.1:4444"  # TODO CONFIGURE API URL
 
 @tool
-def pentest_api_tool(action: str, command: str = None) -> str:
+def pentest_api_tool(action: str, command: str = None, pid: str = None) -> str:
     """
     Interact with the Pentest API. You have access to dictionaries at
     -  /usr/share/wordlists/rockyou.txt -- for password cracking
@@ -21,8 +21,10 @@ def pentest_api_tool(action: str, command: str = None) -> str:
             - "health": check API health
             - "allowed": list allowed commands
             - "execute": run a command (needs 'command')
-            - "execute_interactive" run an interactive command such as ssh, ftp, hydra, mysql... (needs 'command')
+            - "execute_background" : run a command in background (needs 'command')
+            - "get_process": get info about a background process (needs 'pid')
         command: The command to execute (only for action="execute")
+        pid: The pid of the process to get info from (only for action="get_process")
     """
     try:
         if action == "health":
@@ -41,10 +43,14 @@ def pentest_api_tool(action: str, command: str = None) -> str:
             return r.json()
         elif action == "execute_interactive":
             if not command:
-                return "❌ You must provide a command for 'execute_interactive'."
+                return "❌ You must provide a command for 'execute_background'."
             payload = {"command": command}
-            r = requests.post(f"{API_URL}/execute/interactive", json=payload)
+            r = requests.post(f"{API_URL}/execute/background", json=payload)
             return r.json()
+        elif action == "get_process":
+            if not pid:
+                return "❌ You must provide a pid for 'get_process'."
+            r = requests.get(f"{API_URL}/process/{pid}")
 
         else:
             return "❌ Invalid action. Use 'health', 'allowed', or 'execute'."
