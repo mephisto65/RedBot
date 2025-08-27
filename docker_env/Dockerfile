@@ -41,6 +41,7 @@ RUN apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 
+RUN setcap cap_net_raw+ep /bin/ping
 # Getting wordlists and SecLists
 
 RUN mkdir /usr/share/wordlists
@@ -53,6 +54,12 @@ RUN wget -O /usr/share/wordlists/rockyou.txt https://github.com/brannondorsey/na
 
 RUN wget -O /usr/share/wordlists/enumeration/directory_list_medium.txt https://raw.githubusercontent.com/danielmiessler/SecLists/refs/heads/master/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-medium.txt
 RUN wget -O /usr/share/wordlists/enumeration/subdomains-110000.txt https://raw.githubusercontent.com/danielmiessler/SecLists/refs/heads/master/Discovery/DNS/subdomains-top1million-110000.txt
+
+# Getting privilege escalation module
+
+RUN mkdir -p /home/pentest/linpeas
+RUN wget https://github.com/carlospolop/PEASS-ng/releases/latest/download/linpeas.sh -O /home/pentest/linpeas/linpeas.sh
+RUN chmod +x /home/pentest/linpeas/linpeas.sh
 
 # Correction des permissions pour nmap (nécessaire pour les scans)
 RUN chmod +s /usr/bin/nmap

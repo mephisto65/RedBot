@@ -1,0 +1,9 @@
+services:
+  pentest-agent:
+    image: llm_pentest:latest
+    container_name: pentest-agent
+    tty: true
+    stdin_open: true
+    ports:
+      - "4444:7289"
+    restart: unless-stopped

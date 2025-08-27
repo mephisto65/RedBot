@@ -1,3 +1,5 @@
 flask
 dataclasses
 typing
+pexpect
+psutil

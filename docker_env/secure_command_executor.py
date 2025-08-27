@@ -268,13 +268,6 @@ class SecureCommandExecutor:
                     category=category
                 )
             
-            # Limite la taille de sortie (désactivée comme dans votre version)
-            # if stdout and len(stdout) > self.max_output_size:
-            #     stdout = stdout[:self.max_output_size] + "\n[SORTIE TRONQUÉE]"
-            
-            # if stderr and len(stderr) > self.max_output_size:
-            #     stderr = stderr[:self.max_output_size] + "\n[ERREUR TRONQUÉE]"
-            
             execution_time = time.time() - start_time
             success = process.returncode == 0
             
@@ -304,3 +297,103 @@ class SecureCommandExecutor:
     
     def get_allowed_commands(self) -> Dict[str, str]:
         return {cmd: cat.value for cmd, cat in self.allowed_commands.items()}
+    
+    def execute_background_command(self, command):
+        start_time = time.time()
+        cwd = "/home/pentest/workspace"
+        
+        # Validation existante
+        is_valid, reason, category = self._validate_command(command)
+        if not is_valid:
+            self.logger.warning(f"Commande refusée: {command} - Raison: {reason}")
+            return CommandResult(
+                success=False,
+                stdout="",
+                stderr=f"Commande refusée: {reason}",
+                return_code=-1,
+                execution_time=0,
+                command=command,
+                category=category,
+            ), -1
+
+        self.logger.info(f"Exécution de la commande [{category.value}]: {command}")
+        
+        try:
+            process = subprocess.Popen(
+                shlex.split(command),
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                stdin=subprocess.DEVNULL,
+                cwd=cwd,
+                text=True
+            )
+            
+            # Attendre un court moment pour détecter les erreurs immédiates
+            time.sleep(0.1)
+            poll_result = process.poll()
+            
+            if poll_result is not None and poll_result != 0:
+                # Le processus s'est terminé rapidement avec une erreur
+                stdout, stderr = process.communicate()
+                return CommandResult(
+                    success=False,
+                    stdout=stdout,
+                    stderr=stderr,
+                    return_code=poll_result,
+                    execution_time=time.time() - start_time,
+                    command=command,
+                    category=category,
+                ), -1
+                
+        except FileNotFoundError:
+            error_msg = f"Commande introuvable: {command.split()[0]}"
+            self.logger.error(error_msg)
+            return CommandResult(
+                success=False,
+                stdout="",
+                stderr=error_msg,
+                return_code=-1,
+                execution_time=time.time() - start_time,
+                command=command,
+                category=category,
+            ), -1
+            
+        except PermissionError:
+            error_msg = f"Permission refusée pour: {command}"
+            self.logger.error(error_msg)
+            return CommandResult(
+                success=False,
+                stdout="",
+                stderr=error_msg,
+                return_code=-1,
+                execution_time=time.time() - start_time,
+                command=command,
+                category=category,
+            ), -1
+            
+        except Exception as e:
+            self.logger.error(f"Erreur lors de l'exécution: {e}")
+            return CommandResult(
+                success=False,
+                stdout="",
+                stderr=f"Erreur d'exécution: {str(e)}",
+                return_code=-1,
+                execution_time=time.time() - start_time,
+                command=command,
+                category=category,
+            ), -1
+
+        pid = process.pid
+        self.logger.info(f"Commande lancée en arrière-plan avec PID: {pid}")
+        
+        result = CommandResult(
+            success=True,
+            stdout="",
+            stderr="",
+            return_code=0,
+            execution_time=time.time() - start_time,
+            command=command,
+            category=category,
+        )
+        
+        return result, pid, process

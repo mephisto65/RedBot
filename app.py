@@ -1,5 +1,5 @@
 import os
-import openai
+import docker
 
 from langchain_openai import ChatOpenAI
 from langgraph.prebuilt import ToolNode, create_react_agent
@@ -81,7 +81,7 @@ system_message = (
 if __name__ == "__main__":
     start_time = time.time()
 
-    prompt = "You are a pentester AI agent. Your goal is to find vulnerabilities in a web application and exploit them. The target web application is 'http://testphp.vulnweb.com' conduct a full pentest on it. Use all the tools at your disposal to find and exploit vulnerabilities. Start by gathering information about the web application using web search and web scraping. You can use advanced search techniques to find relevant information. such as google dorks. Then, identify potential vulnerabilities based on the gathered information. Finally, exploit the identified vulnerabilities to demonstrate their impact. Document your findings and provide recommendations for remediation."
+    prompt = "Connect with ssh as kali at 192.168.0.62 on port 22 password is kali. When you are connected, execute the python file ./test_ssh.py and follow the instructions given by the script. use the command ssh -p 22 kali@192.168.0.62"
 
     inputs = {"messages": [system_message, ("user", prompt)]}
     config = {"recursion_limit": 110}
@@ -92,4 +92,4 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"❌ Unexpected error: {e}")
         
-    print(f"\n⏱️ Total execution time: {time.time() - start_time:.2f} seconds")
+    print(f"\n⏱️   Total execution time: {time.time() - start_time:.2f} seconds")
